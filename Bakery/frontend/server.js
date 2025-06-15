@@ -1,25 +1,55 @@
-const http = require('http');
+const http = require('http'); // Gives access to Node.js HTTP server tools
 const fs = require('fs');
 const path = require('path');
+//Creating a sample data object for product categories
+const categories = {
+  Breads: ['Baguette', 'Sourdough', 'Whole Wheat'],
+  Cakes: ['Chocolate Cake', 'Cheesecake', 'Red Velvet'],
+  Pastries: ['Danish', 'Croissant', 'Puff Pastry'],
+  Cookies: ['Chocolate Chip', 'Oatmeal', 'Peanut Butter']
+};
 
-http.createServer((req, res) => {
-  let filePath = '.' + (req.url === '/' ? '/Menu.html' : req.url);
-  const ext = path.extname(filePath);
 
-  let contentType = 'text/html';
-  if (ext === '.js') contentType = 'text/javascript';
-  if (ext === '.css') contentType = 'text/css';
-  if (ext === '.json') contentType = 'application/json';
-
-  fs.readFile(filePath, (err, content) => {
-    if (err) {
-      res.writeHead(404);
-      res.end("Not Found");
-    } else {
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content, 'utf-8');
-    }
-  });
-}).listen(5000, () => {
-  console.log('Frontend server running at http://localhost:5000');
+// Creating server
+const server = http.createServer(function (req, res) 
+{
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    if(req.method ==='GET' && req.url=== '/')
+    {
+        fs.readFile(path.join(__dirname,'Menu.html'),(err, data) =>{
+            if(err){
+                res.writeHead(500);
+                res.end('Error loading file');
+            }else{
+                res.writeHead(200, {'Content-Type':'text/html'});
+                res.end(data);
+            }            
+        });        
+    }    
+    else if(req.method === 'POST' && req.url === '/api/category')
+    {   
+        req.on('data', function(chunk)
+        {
+            const data = JSON.parse(chunk);
+            const category = data.category;
+            let message;
+            if(categories[category]){
+                message = `${category} items: ${categories[category].join(',')}`;
+            }     else{
+                message = 'Category not found';
+            } 
+            
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.write(JSON.stringify({message: message}))
+            res.end();
+            
+        });                             
+    }        
+    else
+    {
+        res.writeHead(200,'Page Not Found');
+        res.end();
+    }    
+}).listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
 });
