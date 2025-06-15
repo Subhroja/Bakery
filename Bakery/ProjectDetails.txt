@@ -1,0 +1,80 @@
+bakery-website/
+│
+├── backend/
+│   └── server.js
+│
+├── frontend/
+│   ├── Home.html
+│   ├── Shop.html
+│   ├── Recipes.html
+│   ├── Contact.html
+│   ├── About.html
+│   ├── Account.html
+│   └── styles.css
+
+-----------------------------------------------
+
+Step 3: Create server.js in backend
+
+backend/server.js
+
+const http = require('http');
+
+const categories = {
+Breads: ['Baguette', 'Sourdough', 'Whole Wheat'],
+Cakes: ['Chocolate Cake', 'Cheesecake', 'Red Velvet'],
+Pastries: ['Danish', 'Croissant', 'Puff Pastry'],
+Cookies: ['Chocolate Chip', 'Oatmeal', 'Peanut Butter']
+};
+
+const server = http.createServer((req, res) => {
+// CORS for frontend
+res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+if (req.method === 'OPTIONS') {
+res.writeHead(204);
+res.end();
+return;
+}
+
+if (req.method === 'POST' && req.url === '/category') {
+let body = '';
+req.on('data', chunk => (body += chunk));
+req.on('end', () => {
+try {
+const { category } = JSON.parse(body);
+const items = categories[category] || [];
+res.writeHead(200, { 'Content-Type': 'application/json' });
+res.end(JSON.stringify({ category, items }));
+} catch (err) {
+res.writeHead(400);
+res.end(JSON.stringify({ error: 'Invalid JSON' }));
+}
+});
+} else {
+res.writeHead(404);
+res.end(JSON.stringify({ error: 'Not Found' }));
+}
+});
+
+server.listen(3000, () => {
+console.log('Server running on http://localhost:3000');
+});
+
+—
+
+Step 4: Run and Test
+
+In terminal:
+cd backend
+node server.js
+
+Open Menu.html in browser (from bakery-website/frontend/Menu.html)
+
+Click “Explore” on a category
+
+You should see an alert showing sample items from that category.
+
+—
