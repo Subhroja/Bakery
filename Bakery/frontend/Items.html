@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Item</title>    
+    <title>Items</title>    
 </head>
 <body style="background-image: url('https://images.alphacoders.com/114/1141188.jpg'); background-size: cover; background-repeat: no-repeat; height: 100vh; margin: 0;">
     
@@ -52,11 +52,57 @@
         <img src="https://th.bing.com/th/id/OIP.FsQLEv37EeRpbDNvV6LbDwAAAA?w=189&h=189&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" style="width: 120px;">
         <h3>Red Velvet</h3>
         <button  onclick = "addToCart('Red Velvet')">Add to cart</button>
-     </div>            
+     </div> 
+     
+    <!-- Pastries -->
+         <!-- Card 1 -->
+    <div style="background-color: whitesmoke; width: 220px; text-align: center; border: 1px solid black">       
+        <img src="" style="width: 120px;">
+        <h3>Danish</h3>
+        <button  onclick = "addToCart('Danish')">Add to cart</button>
     </div>
+    
+    <!-- Card 2 -->
+     <div style="background-color: whitesmoke; width: 220px; text-align: center; border: 1px solid black">
+        <img src="https://i.pinimg.com/736x/b2/6a/49/b26a49894b43b69a62d8ec24cbeef648.jpg" style="width: 120px;">
+        <h3>Croissant</h3>
+        <button  onclick = "addToCart('Croissant')">Add to cart</button>
+     </div>
+    
+    <!-- Card 3 -->
+     <div style="background-color: whitesmoke; width: 220px; text-align: center; border: 1px solid black">
+        <img src="https://th.bing.com/th/id/OIP.FsQLEv37EeRpbDNvV6LbDwAAAA?w=189&h=189&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" style="width: 120px;">
+        <h3>Puff Pastry</h3>
+        <button  onclick = "addToCart('Puff Pastry')">Add to cart</button>
+     </div> 
 
-    <script >
-        function addToCart(category) {
+    <!-- Cookies -->
+         <!-- Card 1 -->
+    <div style="background-color: whitesmoke; width: 220px; text-align: center; border: 1px solid black">       
+        <img src="https://bing.com/th/id/OIP._L-cLJ3qCssNrv_Sq-OqGgHaGd?cb=thvnextc2&w=2000&h=1744&rs=1&pid=ImgDetMain" style="width: 120px;">
+        <h3>Chocolate Chip</h3>
+        <button  onclick = "addToCart('Chocolate Chip')">Add to cart</button>
+    </div>
+    
+    <!-- Card 2 -->
+     <div style="background-color: whitesmoke; width: 220px; text-align: center; border: 1px solid black">
+        <img src="https://i.pinimg.com/736x/b2/6a/49/b26a49894b43b69a62d8ec24cbeef648.jpg" style="width: 120px;">
+        <h3>Oatmeal</h3>
+        <button  onclick = "addToCart('Oatmeal')">Add to cart</button>
+     </div>
+    
+    <!-- Card 3 -->
+     <div style="background-color: whitesmoke; width: 220px; text-align: center; border: 1px solid black">
+        <img src="https://th.bing.com/th/id/OIP.FsQLEv37EeRpbDNvV6LbDwAAAA?w=189&h=189&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" style="width: 120px;">
+        <h3>Red Velvet</h3>
+        <button  onclick = "addToCart('Peanut Butter')">Add to cart</button>
+     </div> 
+
+    </div>    
+
+    <script>
+        function addToCart(category)
+        {
             fetch("http://localhost:3000/api/addtoCart", {
                 method: "POST",
                 headers: {
@@ -65,12 +111,10 @@
                 body: JSON.stringify({ category: category })
             })
             .then(res => res.json())
-            .then(data => {
-                document.getElementById("result").textContent = data.message;
-            })
+            .then(data => alert(data.message))
             .catch(err => {
                 console.error("Error:", err);
-                document.getElementById("result").textContent = "Something went wrong!";
+                alert("Something went wrong!");
             });
         }
     </script>

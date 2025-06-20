@@ -52,7 +52,8 @@
             })
             .then(res => res.json())
             .then(data => {
-                document.getElementById("result").textContent = data.message;
+            localStorage.setItem("selectedCategory", category); // optional if needed in Items.html
+            window.location.href = "Items.html"; // redirect after success
             })
             .catch(err => {
                 console.error("Error:", err);
