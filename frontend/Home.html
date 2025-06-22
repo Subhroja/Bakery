@@ -6,47 +6,54 @@
 <body style="background-image: url('https://images.unsplash.com/photo-1523294587484-bae6cc870010?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmFraW5nJTIwYmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D'); background-size: cover; background-repeat: no-repeat; background-position: center;height: 100vh; margin: 0px;">
     <nav style="top:0px; display: flex; width:100%; background-color:bisque; padding:10px;">
         <ul style= "width:94%; text-align:right">
-            <li style="display:inline-block; padding:0 10px"><a href="Home.html" style="color:rgb(80, 74, 74); text-decoration:none">Home</a></li>
-            <li style="display:inline-block; padding:0 10px"><a href="Shop.html" style="color:rgb(80, 74, 74); text-decoration:none">Shop</a></li>
-            <li style="display:inline-block; padding:0 10px"><a href="Recipes.html" style="color:rgb(80, 74, 74); text-decoration:none">Recipes</a></li>
-            <li style="display:inline-block; padding:0 10px"><a href="About.html" style="color:rgb(80, 74, 74); text-decoration:none">About</a></li>
-            <li style="display:inline-block; padding:0 10px"><a href="Contact.html" style="color:rgb(80, 74, 74); text-decoration:none">Contact Us</a></li>
+            <li style="display:inline-block; padding:0 10px"><input type="text" placeholder="Search"></input></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Home.html" style="color:rgb(80, 74, 74); text-decoration:none" onclick="home()">Home</a></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Menu.html" style="color:rgb(80, 74, 74); text-decoration:none" onclick="menu(event)">Menu</a></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Cart.html" style="color:rgb(80, 74, 74); text-decoration:none">Cart</a></li>
             <li style="display:inline-block; padding:0 10px"><a href="Account.html" style="color:rgb(80, 74, 74); text-decoration:none">Account</a></li>
         </ul>
     </nav>
-    <nav style="margin-top: 10px; display: flex; justify-content: right; width:100%; background-color: #eed4e6;">
+   <!-- <nav style="margin-top: 10px; display: flex; justify-content: right; width:100%; background-color: #eed4e6;">
         <button classname="buy" style=" width: 100px; height: 40px; border-radius: 40px; background-color: rgb(236, 15, 126); padding: 10px;" onclick="buyNow()">Buy Now</button> 
         <button classname="cart" type="button" style="width:100px; height: 40px; border-radius: 40px; background-color: rgb(236, 15, 126)" onclick="addToCart()">Add To Cart</button>
         <button classname="wishlist" type="button" style="width: 100px; height: 40px; border-radius: 40px; background-color: rgb(236, 15, 126)" onclick="wishList()">Wishlist</button>
-    </nav>
+    </nav>-->
     <script>
         function home()
         {
             fetch("http://localhost:3000/home", {
-                method: "POST",
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 }}).then(res=>res.json()).then(data=>alert(data.message));
         }
-        function buyNow() {
-            fetch("http://localhost:3000/buy", {
-                method: "POST",
+        function menu(event) {
+            event.preventDefault();
+            fetch("http://localhost:3000/menu", {
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ item: "cake" })
-            }).then(res=>res.json()).then(data=>alert(data.message));
-            window.location.href="Checkout.html";
+                }
+            })
+            .then(res=>res.json())
+            .then(data=>{alert(data.message);
+            window.location.href="Menu.html";
+            })
+            .catch(err => {
+                alert("Error fetching menu");
+                window.location.href = "Menu.html";
+            });
         }
 
         function addToCart() {
             fetch("http://localhost:3000/cart", {
-                method: "POST",
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ item: "cake" })
             }).then(res=>res.json()).then(data=>alert(data.message));
+            window.location.href="Cart.html";
         }
 
         function wishList() {

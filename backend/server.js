@@ -16,14 +16,17 @@ const server = http.createServer((req, res) => {
             res.end(data);
         })
     }
-    else if(req.method === 'POST' && req.url === '/buy'){
-        handlePost(req, res, 'Buy request received');
-    }
-    else if(req.method === 'POST' && req.url === '/cart'){
-        handlePost(req, res, 'Item added to cart');
-    }
-    else if(req.method === 'POST' && req.url ==='/wishlist'){
-        handlePost(req, res, 'Item added to wishlist');
+    else if (req.method === 'GET' && req.url.endsWith('.html')){
+        const filename = req.url.replace('/', '');
+        const filepath = path.join(__dirname, '..', 'frontend', filename);
+        fs.readFile(filepath, function(err, data){
+            if (err) {
+                res.writeHead(404, { 'Content-Type': 'text/html' });
+                return res.end('<h1>Page Not Found</h1>');
+            }
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(data);
+        })
     }
     else {
         res.writeHead(404, {'Content-Type': 'application/json'});
