@@ -1,0 +1,65 @@
+<html>
+<head>
+    <title>Menu</title>    
+</head>
+<body style="background-image: url('https://images.alphacoders.com/114/1141188.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center; height: 100vh; margin: 0;">
+    
+    <div style="text-align: center; margin-top: 10%;">
+        <h1 style="font-size: 70px;">Bakery Menu</h1>
+    </div>
+
+    <div style="gap:20px; display: flex; justify-content: center; flex-wrap: wrap; margin-top: 10%;">
+    
+    <!-- Card 1 -->
+    <div style="background-color: whitesmoke; width: 220px; text-align: center;">       
+        <img src="https://static.vecteezy.com/system/resources/previews/028/597/566/non_2x/croissant-bread-file-no-background-ai-generated-png.png" style="width: 120px;">
+        <h3>Breads</h3>
+        <button  onclick = "fetchCategory('Breads')">Explore</button>
+    </div>
+    
+    <!-- Card 2 -->
+     <div style="background-color: whitesmoke; width: 220px; text-align: center;">
+        <img src="https://th.bing.com/th/id/OIP.S5paV8xo_Si5SEViXE6y3gHaGQ?pid=ImgDet&w=184&h=155&c=7&dpr=1.3" style="width: 120px;">
+        <h3>Cakes</h3>
+        <button  onclick = "fetchCategory('Cakes')">Explore</button>
+     </div>
+    
+    <!-- Card 3 -->
+     <div style="background-color: whitesmoke; width: 220px; text-align: center;">
+        <img src="https://th.bing.com/th/id/OIP.FsQLEv37EeRpbDNvV6LbDwAAAA?w=189&h=189&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" style="width: 120px;">
+        <h3>Pastries</h3>
+        <button  onclick = "fetchCategory('Pastries')">Explore</button>
+     </div>
+
+    <!-- Card 4 -->
+     <div style="background-color: whitesmoke; width: 220px; text-align: center;">
+        <img src="https://img.freepik.com/premium-photo/cookies-2d-vector-illustration-cartoon-white-background_889056-21413.jpg?w=2000" style="width: 120px;">
+        <h3>Cookies</h3>
+        <button  onclick = "fetchCategory('Cookies')">Explore</button>
+     </div>    
+    </div>
+
+    <p id="result" style="font-size: 20px; color: white; text-align: center;"></p>
+
+    <script >
+        function fetchCategory(category) {
+            fetch("http://localhost:3000/api/category", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ category: category })
+            })
+            .then(res => res.json())
+            .then(data => {
+            localStorage.setItem("selectedCategory", category); // optional if needed in Items.html
+            window.location.href = "Items.html"; // redirect after success
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                document.getElementById("result").textContent = "Something went wrong!";
+            });
+        }
+    </script>
+</body>
+</html>
