@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cart</title>
+</head>
+<body>
+  <div style="text-align: center;">
+    <h1 style="font-size: 70px;">Your Cart</h1>
+    <table id="cart-table" style="margin: auto; font-size: 22px; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th style="padding: 10px;">Item</th>
+          <th style="padding: 10px;">Quantity</th>
+          <th style="padding: 10px;">Add</th>
+          <th style="padding: 10px;">Remove</th>
+        </tr>
+      </thead>
+      <tbody id="cart-body"></tbody>
+    </table>
+    <p id="empty-msg" style="font-size: 20px; color: #e91e63;"></p>
+    <button onclick="clearCart()" style="margin-top: 20px; font-size: 18px;">Clear Cart</button>
+  </div>
+
+  <script>
+    function displayCart() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || {};
+      const cartBody = document.getElementById("cart-body");
+      const emptyMsg = document.getElementById("empty-msg");
+      cartBody.innerHTML = "";
+
+      const items = Object.keys(cart);
+      if (items.length === 0) {
+        emptyMsg.textContent = "Your cart is empty.";
+        return;
+      }
+
+      emptyMsg.textContent = "";
+      items.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td style="padding: 10px;">${cart[item]}</td>
+          <td style="padding: 10px;">${item}</td>
+          <td style="padding: 10px;">
+            <button onclick="addItem('${cart[item]}')" style="font-size:16px;">+</button>
+          </td>
+          <td style="padding: 10px;">
+            <button onclick="removeItem('${cart[item]}')" style="font-size:16px;">-</button>
+          </td>
+        `;
+        cartBody.appendChild(tr);
+      });
+    }
+
+    function addItem(item) {
+      const cart = JSON.parse(localStorage.getItem("cart")) || {};
+      cart[item] = (item || 0) + 1;
+      localStorage.setItem("cart", JSON.stringify(cart));
+      displayCart();
+    }
+
+    function removeItem(item) {
+      const cart = JSON.parse(localStorage.getItem("cart")) || {};
+      if (cart[item]) {
+        item -= 1;
+        if (cart[item] <= 0) {
+          delete cart[item];
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        displayCart();
+      }
+    }
+
+    function clearCart() {
+      localStorage.removeItem("cart");
+      displayCart();
+    }
+
+    window.onload = displayCart;
+  </script>
+</body>
+</html>
