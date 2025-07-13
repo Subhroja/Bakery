@@ -1,0 +1,50 @@
+<html>
+<head>
+    <title>Account</title>    
+</head>
+<body style="background-image: url('https://images.alphacoders.com/114/1141188.jpg'); background-size: cover; background-repeat: no-repeat; height: 100vh; margin: 0; background-color: rgba(255, 255, 255, 0.6);">
+    <nav style="top:0px; display: flex; width:100%; background-color:bisque; padding:10px;">
+        <ul style= "width:94%; text-align:right">
+            <li style="display:inline-block; padding:0 10px"><input type="text" placeholder="Search"></input></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Home.html" style="color:rgb(80, 74, 74); text-decoration:none" onclick="home()">Home</a></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Menu.html" style="color:rgb(80, 74, 74); text-decoration:none" onclick="menu(event)">Menu</a></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Cart.html" style="color:rgb(80, 74, 74); text-decoration:none">Cart</a></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Account.html" style="color:rgb(80, 74, 74); text-decoration:none">Account</a></li>
+        </ul>
+    </nav>
+    <br>
+    <div style="text-align: center;">
+        <h1 style="font-size: 70px;">Our Story</h1>
+        <p style ="color: black;">We began with a simple yet powerful idea - that everyone deserves a taste of the world. Exotic breads and cakes, often seen as luxury items reserved for a few, should be accessible to all, regardless of budget. 
+            Why should only a handful experience the rich aroma of a freshly baked French baguette, the soft fluffiness of a Japanese milk bread, or the decadent layers of a German Black Forest cake? Food is not just sustenance; 
+            it is culture, emotion, and connection. Through every bite of a carefully crafted dessert or a perfectly baked loaf, one can travel across continents, learn new stories, and celebrate diversity.
+            Our vision is rooted in the belief that high quality doesn't have to mean high cost. We strive to make global bakery delights affordable without compromising on authenticity or taste. 
+            By sourcing smartly, baking fresh daily, and minimizing overheads, we ensure that our customers enjoy premium products at the lowest possible prices.
+            Everyone deserves to indulge, celebrate, and explore — and what better way to do that than through food? We are here to make that journey delicious, memorable, and inclusive for all. 
+            Because the world's flavors belong on everyone's plate.
+        </p>
+    </div>   
+    <br>
+    <br>
+    <div style="text-align: center;">
+        <p><strong>Contact us on:</strong> +918899334477</p>
+        <p><strong>Email us on:</strong> bods.22@gmail.com</p>
+    </div>
+    <br>
+    <br>
+    <div style="text-align: center;">
+        <p>Already a user? <button>LogIn</button></p>
+        <br>
+        <button>SignIn</button>
+    </div>
+
+    <script>
+        function home()
+        {
+            fetch("http://localhost:3000/home", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }}).then(res=>res.json()).then(data=>alert(data.message));
+        }    
+    </script>

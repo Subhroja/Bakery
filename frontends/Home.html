@@ -27,22 +27,10 @@
                     "Content-Type": "application/json"
                 }}).then(res=>res.json()).then(data=>alert(data.message));
         }
-        function menu(event) {
+        function menu(event) 
+        {
             event.preventDefault();
-            fetch("http://localhost:3000/menu", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(res=>res.json())
-            .then(data=>{alert(data.message);
-            window.location.href="Menu.html";
-            })
-            .catch(err => {
-                alert("Error fetching menu");
-                window.location.href = "Menu.html";
-            });
+            window.location.href = "Menu.html";
         }
 
         function addToCart() {
@@ -56,6 +44,7 @@
             window.location.href="Cart.html";
         }
 
+        /*
         function wishList() {
             fetch("http://localhost:3000/wishlist", {
                 method: "POST",
@@ -64,7 +53,7 @@
                 },
                 body: JSON.stringify({ item: "cake" })
             }).then(res=>res.json()).then(data=>alert(data.message));
-        }
+        } */
     </script>
 
     <div class="heading" style="margin-top:300px; font-size: 42; text-align:left; padding: 5px; width: 300px; margin-left: 20px; color:bisque"><strong><em>Cakes And Desserts That You Can't Resist</em></strong></div>

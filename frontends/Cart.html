@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart</title>
+  <style>
+    body { background-image: url('https://images.alphacoders.com/114/1141188.jpg'); background-size: cover; background-repeat: no-repeat; height: 100vh; margin: 0; background-color: rgba(255, 255, 255, 0.6); }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { padding: 0.5rem; border-bottom: 1px solid #ddd; text-align: left; }
+    th { background: #f4f4f4; }
+    button { padding: 0.25rem 0.5rem; margin: 0 0.2rem; }
+    #total { text-align: right; font-weight: bold; margin-top: 1rem; }
+  </style>
+</head>
+<body>  
+  <nav style="top:0px; display: flex; width:100%; background-color:bisque; padding:10px;">
+        <ul style= "width:94%; text-align:right">
+            <li style="display:inline-block; padding:0 10px"><input type="text" placeholder="Search"></input></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Home.html" style="color:rgb(80, 74, 74); text-decoration:none" onclick="home()">Home</a></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Menu.html" style="color:rgb(80, 74, 74); text-decoration:none" onclick="menu(event)">Menu</a></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Cart.html" style="color:rgb(80, 74, 74); text-decoration:none">Cart</a></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Account.html" style="color:rgb(80, 74, 74); text-decoration:none">Account</a></li>
+        </ul>
+    </nav>  
+    <div style="display: grid; gap: 20px; padding: 20px; max-width: 1000px; margin: auto;">
+      <h1 style="text-align: center;">Your Cart</h1>
+      <table id="cart-table">
+      <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- JS will inject rows here -->
+      </tbody>
+    </table>  
+
+    <div id="total" style="color: white;">Total: ₹0</div>
+    <br>
+    <div style="text-align: center;">
+    <button onclick ="clearCart()">Clear Cart</button>
+    </div>
+  </div>
+  <script>
+  async function renderCart() {
+    try {
+      const response = await fetch("http://localhost:3000/api/getCart", {
+        method: "POST"
+      });
+      const data = await response.json();
+
+      const tbody = document.querySelector("#cart-table tbody");
+      const totalDiv = document.getElementById("total");
+      tbody.innerHTML = "";
+
+      let total = 0;
+      const pricePerItem = 100; // You can change this logic if price is stored
+
+      data.forEach(item => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = 
+          `<td>${item.item}</td>
+          <td>${item.quantity}</td>
+          <td>₹${item.quantity * pricePerItem}</td>
+          <td>
+            <button onclick="updateQuantity('${item.item}', 'add')">+</button>
+            <button onclick="updateQuantity('${item.item}', 'remove')">-</button>
+          </td>`
+        ;
+
+        tbody.appendChild(row);
+        total += item.quantity * pricePerItem;
+      });
+
+      totalDiv.textContent = `Total: ₹${total}`;
+    } catch (error) {
+      console.error("Failed to fetch cart:", error);
+    }
+  }
+
+  function updateQuantity(item, action) {
+    let url;
+    if (action === 'add') {
+      url = `http://localhost:3000/api/addtoCart?item=${encodeURIComponent(item)}&quantity=1`;
+    } else if (action === 'remove') {
+      url = `http://localhost:3000/api/removeItemFromCart?item=${encodeURIComponent(item)}`;
+    }
+
+    fetch(url, {
+      method: "POST"
+    })
+    .then(res => res.json())
+    .then(() => {
+      renderCart(); // Refresh cart after update
+    })
+    .catch(err => {
+      console.error(`Failed to ${action} item:`, err);
+    });
+  }
+
+  function clearCart()
+  {
+    fetch(`http://localhost:3000/api/clearCart`, {
+                method: "POST"
+            })
+            .then(res => res.json())
+            .then(data => {alert(data.message);renderCart();})
+            .catch(err => {
+                console.error("Error:", err);
+                alert("Something went wrong!");
+            });
+  }
+
+  // Initial load
+  renderCart();
+</script>
+
+
+
+</body>
+</html>

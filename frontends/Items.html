@@ -3,7 +3,16 @@
     <title>Items</title>    
 </head>
 <body style="background-image: url('https://images.alphacoders.com/114/1141188.jpg'); background-size: cover; background-repeat: no-repeat; height: 100vh; margin: 0;">
-    
+    <nav style="top:0px; display: flex; width:100%; background-color:bisque; padding:10px;">
+        <ul style= "width:94%; text-align:right">
+            <li style="display:inline-block; padding:0 10px"><input type="text" placeholder="Search"></input></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Home.html" style="color:rgb(80, 74, 74); text-decoration:none" onclick="home()">Home</a></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Menu.html" style="color:rgb(80, 74, 74); text-decoration:none" onclick="menu(event)">Menu</a></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Cart.html" style="color:rgb(80, 74, 74); text-decoration:none">Cart</a></li>
+            <li style="display:inline-block; padding:0 10px"><a href="Account.html" style="color:rgb(80, 74, 74); text-decoration:none">Account</a></li>
+        </ul>
+    </nav>
+    <br>
     <div style="text-align: center;">
         <h1 style="font-size: 70px;">Item Details</h1>
     </div>
@@ -101,14 +110,10 @@
     </div>    
 
     <script>
-        function addToCart(category)
+        function addToCart(item)
         {
-            fetch("http://localhost:3000/api/addtoCart", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ category: category })
+            fetch(`http://localhost:3000/api/addtoCart?item=${encodeURIComponent(item)}&quantity=1`, {
+                method: "POST"
             })
             .then(res => res.json())
             .then(data => alert(data.message))
