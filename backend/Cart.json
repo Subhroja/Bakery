@@ -2,5 +2,9 @@
   {
     "item": "Chocolate Cake",
     "quantity": 1
+  },
+  {
+    "item": "Puff Pastry",
+    "quantity": 1
   }
 ]
